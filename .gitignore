@@ -1,0 +1,6 @@
+# Все кроме cpp,h
+*
+!/.gitignore
+!*.cpp
+!*.h
+
