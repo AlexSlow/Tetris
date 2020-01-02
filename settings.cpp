@@ -19,10 +19,11 @@ settings::settings(const settings &ref) {
 	this->speed_increese = ref.speed_increese;
 	this->color = ref.color;
 }
-int settings::get_width() { return this->display_width; }
-int settings::get_height() { return this->display_height; }
-int settings::get_speed() { return this->base_speed; }
-int settings::get_increese() { return this->speed_increese; }
+int settings::get_width() const { return this->display_width; }
+int settings::get_height() const { return this->display_height; }
+int settings::get_speed() const { return this->base_speed; }
+int settings::get_increese() const { return this->speed_increese; }
+as_color* settings::get_color() const { return this->color; }
 
  settings&  settings:: operator=(settings& ref) {
 	 this->color = ref.color;

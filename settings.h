@@ -4,8 +4,8 @@ class settings
 {
 	class builder;
 	friend builder;
-public:
 
+public:
 
 class builder
 	{
@@ -30,10 +30,11 @@ class builder
 	explicit settings();
 	~settings();
 	settings(const settings &ref);
-	int  get_width();
-	int get_height();
-	int get_speed();
-	int get_increese();
+	int  get_width() const;
+	int get_height() const;
+	int get_speed() const;
+	int get_increese() const;
+	as_color* get_color() const;
 	settings& operator=(settings& ref);
 	
 

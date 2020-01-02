@@ -1,9 +1,9 @@
 #pragma once
 struct as_color {
-	int r;
-	int g;
-	int b;
-	as_color(int R, int G, int B)
+	float r;
+	float g;
+	float b;
+	as_color(float R, float G, float B)
 	{
 		r = R;
 		g = G;
