@@ -14,12 +14,10 @@ class builder
 		builder();
 		~builder();
 		builder(const builder &ref);
-
-	builder* set_width(int);
-	builder* set_height(int);
 	builder* set_speed(int);
 	builder* set_increese(int);
-	builder* set_color(as_color *color);
+	builder* set_amout_of_blocks_into_lineX(int);
+	builder* set_amout_of_blocks_into_lineY(int);
 	settings* build();
 	private:
 		settings* Settings;
@@ -30,18 +28,17 @@ class builder
 	explicit settings();
 	~settings();
 	settings(const settings &ref);
-	int  get_width() const;
-	int get_height() const;
 	int get_speed() const;
 	int get_increese() const;
-	as_color* get_color() const;
+	int get_amout_blocks_into_lineX() const;
+	int get_amout_blocks_into_lineY() const;
+
 	settings& operator=(settings& ref);
 	
 
 private:
-	int display_width;
-	int display_height;
 	int base_speed;
 	int speed_increese;
-	as_color* color;
+	int amout_of_blocks_into_lineX;
+	int amout_of_blocks_into_lineY;
 };

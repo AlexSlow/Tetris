@@ -19,4 +19,11 @@ struct as_color {
 		b = ref.b;
 		g = ref.g;
 	}
+	as_color& operator=(as_color& ref)
+	{
+		r = ref.r;
+		b = ref.b;
+		g = ref.g;
+		return *this;
+	}
 }; 

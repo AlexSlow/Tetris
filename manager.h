@@ -11,13 +11,13 @@ public:
 	~manager();
 	//manager(const manager &ref);
 	controller* get_controller();
-	void setSettings(const settings*  ptrsettings);
-	const settings* getSettings() const;
+	void setSettings( settings*  ptrsettings);
+	settings* getSettings() const;
 	void create_window();
 	void start();
 private:
 	controller* key_handler;
-	const settings*  ptrSettings;
+	 settings*  ptrSettings;
 	const render * const ptr_render;
 
 	
