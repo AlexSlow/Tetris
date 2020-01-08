@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "structs.h"
 class settings
 {
@@ -14,22 +15,25 @@ class builder
 		builder();
 		~builder();
 		builder(const builder &ref);
-	builder* set_speed(int);
-	builder* set_increese(int);
+	//	builder* set_color(as_color&);
+	//	builder* set_color(int a,int b,int c);
+	builder* set_speed(float);
+	builder* set_increese(float);
 	builder* set_amout_of_blocks_into_lineX(int);
 	builder* set_amout_of_blocks_into_lineY(int);
-	settings* build();
+	std::unique_ptr<settings>  build();
 	private:
-		settings* Settings;
+		std::unique_ptr<settings>  Settings;
 
 	};
 
 
-	explicit settings();
+	 settings();
 	~settings();
 	settings(const settings &ref);
-	int get_speed() const;
-	int get_increese() const;
+	float get_speed() const;
+	//const as_color& get_color() const;
+	float get_increese() const;
 	int get_amout_blocks_into_lineX() const;
 	int get_amout_blocks_into_lineY() const;
 
@@ -37,8 +41,9 @@ class builder
 	
 
 private:
-	int base_speed;
-	int speed_increese;
+	// as_color color;
+	float base_speed;
+	float speed_increese;
 	int amout_of_blocks_into_lineX;
 	int amout_of_blocks_into_lineY;
 };

@@ -1,24 +1,32 @@
 #pragma once
 #include <iostream>
-#include "controller.h"
+#include <vector>
+#include <functional>
+#include <mutex>
+#include<memory>
 #include "settings.h"
 #include "render.h"
+#include "object.h"
 class manager
 {
 
 public:
-	manager(controller* const ptr_contrlooer,const render * const ptrrender );
+	friend void run( manager &m);
+	friend bool one_line_generate(manager &m);
+	manager( const render* const Rende);
 	~manager();
-	//manager(const manager &ref);
-	controller* get_controller();
-	void setSettings( settings*  ptrsettings);
+	void setSettings(settings&  ptrsettings);
 	settings* getSettings() const;
 	void create_window();
 	void start();
 private:
-	controller* key_handler;
-	 settings*  ptrSettings;
-	const render * const ptr_render;
+	std::unique_ptr<settings> ptrSettings;
+	const std::unique_ptr<const render> ptr_render; //1-Это константный указатель 2 это константные данные
+	std::shared_ptr<object> shape;
+	//bool is_created;
+	std::vector<std::function<bool(manager &m)>> f_list;
+	int level;
+
 
 	
 };
