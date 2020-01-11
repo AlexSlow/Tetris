@@ -1,15 +1,34 @@
-#include<iostream>
-#include "object.h"
-#include "mutex"
-extern std::mutex my_mutex;
-using namespace std;
-bool contains(const std::vector<field> &vector, const field &f);
-bool contains_row(const std::vector<field> &vector, const field *temp);
-object::object() :size(0), NX(0), NY(0), is_created(false){
-}
 
+#include "object.h"
+//extern std::mutex my_mutex;
+using namespace std;
+int object::points=0;
+
+bool comp( field f1,  field f2) {
+
+	return f1.Ycoord > f2.Ycoord;
+
+}
+object::object(int l) :size(0), NX(0), NY(0),level(l){
+
+}
+object::~object() {  }
+void object::setKeys(std::vector<field> r) {
+for (field& key : r)
+{
+	for ( field& item:fields)
+	{
+		if (key == item)
+		{
+
+			r_keys.push_back(new field(item));
+		}
+	}
+}
+}
 void object::setCoords(std::unique_ptr<field[]> points) {
 	//lock_guard<mutex> lock(my_mutex);
+	//r_keys.clear();
 	fields.clear();
 	fields.reserve(size);
 	for (int i = 0; i < size; i++)
@@ -49,14 +68,30 @@ bool object::down()
 		int n = item.Ycoord + 1;
 		if ((item.Ycoord == (NY-1)) || (!map[item.Xcoord][n].is_empty))
 		{
-			//Устроим проверку
-
+			//Устроим проверку свой это объект или нет
+			bool is_have = false;
+			for (const field& item1 : fields)
+			{
+				if ((item1.Xcoord == item.Xcoord) && (item1.Ycoord == n)) { is_have = true; break; }
+			}
+			if (!is_have)
+			{
 			check_and_remove();
-
 			fields.clear();
+
+
+			r_keys.clear();//r
 			return true;
+			}
+			
+			
 		}
 	}
+
+	// движение вниз
+
+	sort(fields.begin(), fields.end(),comp);  // сортировка
+
 	for (field& item : fields)
 	{
 		map[item.Xcoord][item.Ycoord].is_empty = true;
@@ -64,7 +99,11 @@ bool object::down()
 		item.Ycoord++;
 		map[item.Xcoord][item.Ycoord].is_empty = false;
 		map[item.Xcoord][item.Ycoord].color = item.color;
-
+	}
+	for (field* item : r_keys)
+	{
+		item->Ycoord ++;
+		//cout <<"Y "<< item->Ycoord << endl;
 	}
 	//my_mutex.unlock();
 	return false;
@@ -129,7 +168,10 @@ bool object::horizontal_move(int i)
 		map[item.Xcoord][item.Ycoord].color = item.color;
 
 	}
-
+	for (field* item : r_keys)
+	{
+		item->Xcoord += i;
+	}
 
 	//my_mutex.unlock();
 	return false;
@@ -147,6 +189,7 @@ void object::check_and_remove()
 	//Сначала проверим 
 	for (int j = NY - 1; j >= 0; j--)
 	{
+		
 		bool is_row_full = true;
 		for (int i = NX - 1; i >= 0; i--)
 		{
@@ -160,8 +203,9 @@ void object::check_and_remove()
 				for (int k = 0; k < NX; k++)
 				{
 					map[k][j].is_empty = true;
+					points += (increase*level);
 				}	
-		
+		//Видимо, это смещение на 1 клетку вниз
 				for (int m = j; m >= 0; m--)
 				{
 					
@@ -172,7 +216,7 @@ void object::check_and_remove()
 						//cout << m<<" "<<n << endl;
 						if (!map[n][m - 1].is_empty)
 						{
-							
+							is_row_empty - false;
 							map[n][m] = map[n][m-1];
 							map[n][m-1] = true;
 						}
@@ -180,10 +224,13 @@ void object::check_and_remove()
 					}
 					if (!is_row_empty) break;
 				}
-		
-			break;
+				j=NY;//Что бы сразу все строки проверили
+			//break;
 		}
 	}
+}
+ void  object::rotate()
+{
 }
 bool contains(const std::vector<field> &vector,const field &f) {
 	for (const field& item : vector)
@@ -192,7 +239,7 @@ bool contains(const std::vector<field> &vector,const field &f) {
 	}
 	return false;
 }
-//Проверка строки на обработанность 
+//Проверка строки на обработанность  для оптимизации
 bool contains_row(const std::vector<field> &vector, const field *temp)
 {
 	for (const field& item : vector)
@@ -201,3 +248,5 @@ bool contains_row(const std::vector<field> &vector, const field *temp)
 	}
 	return false;
 }
+
+
